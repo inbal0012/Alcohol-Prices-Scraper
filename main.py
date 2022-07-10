@@ -65,6 +65,54 @@ def data_from_page(soup):
     # print(soup.find('span', 'aria-label'=re.compile("שם יצרן")))
 
 
+def data_from_search_list(soup):
+    results = soup.find_all('li', id=re.compile("liCustomCatalogItem"))
+    for result in results:
+        # print(result)
+        name = result.find('div', class_=re.compile("list-item-name-wrapper")).find('h2')
+        # print(name)
+        print(name['aria-label'])
+        # print("Name: " + name.text)
+
+        prize = result.find('div', class_=re.compile("list-item-price-wrapper")).find('span', class_=re.compile("item-price-value"))
+        print("Prize: " + prize.text)
+
+        outOfStock = result.find('div', class_=re.compile("list-item-pic-wrapper")).find('img', alt=re.compile("אזל מהמלאי"))
+        if (outOfStock):
+            print("outOfStock")
+
+        print("")
+
+
+def search_attempt(name):
+    url = "https://www.the-importer.co.il/Web/?PageType=9&SearchResults=true&searchString=" + name
+    r = requests.get(url)
+    soup = BeautifulSoup(r.content, "html.parser")
+    # print(soup)
+
+    if is_product_page(soup, name):
+        print("in page")
+        data_from_page(soup)
+    else:
+        print("search")
+        data_from_search_list(soup)
+
+    # print(soup.find('li', id=re.compile("catalogDataList")).find('div', class_=re.compile("list-item-name-wrapper")).find('h2').text)
+
+
+def is_product_page(soup, name):
+    # r = requests.get("https://www.the-importer.co.il/Web/?PageType=9&SearchResults=true&searchString=" + name)
+    # soup = BeautifulSoup(r.content, "html.parser")
+
+    # url = soup.find("meta", property="og:url")
+    # print(url)
+
+    metaKeywords = soup.find("meta", id="metaKeywords")["content"]
+    if re.search(name, metaKeywords):
+        print("product page")
+        return True
+
+
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
