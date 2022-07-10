@@ -121,6 +121,7 @@ def print_hi(name):
 from the_importer import TheImporter
 from alcohol123 import Alcohol123
 from drinks4u import Drinks4u
+from haturki import Haturki
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print_hi('PyCharm')
@@ -143,6 +144,8 @@ if __name__ == '__main__':
     drinks4u = Drinks4u()
     # drinks4u.first_attempt()
     # drinks4u.search_attempt("מקאלן")
+    haturki = Haturki()
+    haturki.first_attempt()
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
